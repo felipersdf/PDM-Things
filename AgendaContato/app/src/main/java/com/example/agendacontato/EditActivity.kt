@@ -59,9 +59,9 @@ class EditActivity : AppCompatActivity() {
         this.btVoltar = findViewById(R.id.btEditVoltar)
 
         //Ediçao
-//        etNome.setText(contato.nome)
-//        etEmail.setText(contato.email)
-//        etFone.setText(contato.fone)
+        etNome.setText(contato.nome)
+        etEmail.setText(contato.email)
+        etFone.setText(contato.fone)
 
         this.ibfoto.setOnClickListener(View.OnClickListener {
             alertaImagem(it)

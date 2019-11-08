@@ -45,6 +45,7 @@ class ContatoAdapter(var context: Context, var listaContatos: ArrayList<Contato>
 //            val bitmap = BitmapFactory.decodeFile(imagemFoto.absolutePath)
 //            holder.foto.setImageBitmap(bitmap)
 //        }
+
     }
 
     fun update(){

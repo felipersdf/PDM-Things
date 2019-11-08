@@ -1,13 +1,18 @@
 package com.example.agendacontato
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dao: ContatoDAO
     private lateinit var lista: ArrayList<Contato>
     private lateinit var contatoRecycler: RecyclerView
+
 
     val ADD_CONTATO = 1
     val EDIT_CONTATO = 2
@@ -44,31 +50,75 @@ class MainActivity : AppCompatActivity() {
 
         this.contatoRecycler.adapter = ContatoAdapter(this, this.lista)
 
-
-    }
-/////// Criando Listener para o Recycler View
-    lateinit var mClickListener: ClickListener
-
-    fun setOnItemClickListener(aClickListener: ClickListener) {
-        mClickListener = aClickListener
+        this.contatoRecycler.addOnItemClickListener(object: OnItemClickListener{
+            override fun onItemClicked(position: Int, view: View) {
+                    abrirOpcoes(lista.get(position))
+            }
+        })
     }
 
-    interface ClickListener {
-        fun onClick(pos: Int, aView: View)
-    }
+    fun abrirOpcoes(contato: Contato){
+        val builder = AlertDialog.Builder(this)
+        val itens = arrayOf("Editar", "Enviar Email", "Excluir")
+        builder.setTitle(contato.nome)
+        builder.setItems(itens) {dialog, which ->
+            if(itens[which] == "Editar"){
+                val itt = Intent(this, EditActivity::class.java)
+                itt.putExtra("CONTATO", contato)
+                startActivityForResult(itt, EDIT_CONTATO)
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        override fun onClick(v: View) {
-            mClickListener.onClick(adapterPosition, v)
+            }else if(itens[which] == "Enviar Email"){
+                val uri = Uri.parse("mailto:${contato.email}")
+                val it = Intent(Intent.ACTION_SENDTO, uri)
+                it.putExtra(Intent.EXTRA_SUBJECT, "Assunto")
+                it.putExtra(Intent.EXTRA_TEXT, "Texto")
+                startActivity(it)
+
+            }else if(itens[which] == "Excluir"){
+                lista.remove(contato)
+                dao.deleteContato(contato.id)
+                this.contatoRecycler.adapter?.notifyDataSetChanged()
+            }
+
         }
+
+        builder.create().show()
+
     }
 
-/// --- Fim do Listener
+
+
+    /// Adicionando Listener para o Recycler View
+
+    interface OnItemClickListener {
+        fun onItemClicked(position: Int, view: View)
+    }
+
+    fun RecyclerView.addOnItemClickListener(onClickListener: OnItemClickListener) {
+        this.addOnChildAttachStateChangeListener(object : RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewDetachedFromWindow(view: View) {
+                view?.setOnClickListener(null)
+            }
+
+            override fun onChildViewAttachedToWindow(view: View) {
+                view?.setOnClickListener({
+                    val holder = getChildViewHolder(view)
+                    onClickListener.onItemClicked(holder.adapterPosition, view)
+                })
+            }
+        })
+    }
+
+    //// ---------------------------------------------------------
+
+
+
+
 
     fun atualizar(){
         this.lista.clear()
         this.lista.addAll(this.dao.getListContatos("ASC"))
-        (this.contatoRecycler.adapter as ContatoAdapter).update()
+        this.contatoRecycler.adapter?.notifyDataSetChanged()
     }
 
 
@@ -83,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                     this.dao.inserirContato(c)
 
                     this.lista = dao.getListContatos("ASC")
-                    this.atualizar()
+                    this.contatoRecycler.adapter?.notifyDataSetChanged()
                 }
             }else if (requestCode == EDIT_CONTATO){
                 //Editar contato
@@ -91,7 +141,8 @@ class MainActivity : AppCompatActivity() {
                 this.dao.updateContato(c.id, c)
 
                 this.lista = dao.getListContatos("ASC")
-                this.atualizar()
+
+                this.contatoRecycler.adapter?.notifyDataSetChanged()
             }
 
     }
