@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     val ADD_CONTATO = 1
     val EDIT_CONTATO = 2
+    var order = "ASC"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +37,13 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             val it = Intent(this, EditActivity::class.java)
-            val teste = Contato("Felipe", "felipe@email.com", "930172392")
+            val teste = Contato("", "", "")
             it.putExtra("CONTATO", teste)
             startActivityForResult(it, ADD_CONTATO)
         }
 
         this.dao = ContatoDAO(this)
-        this.lista = dao.getListContatos("ASC")
+        this.lista = dao.getListContatos(order)
 
         this.contatoRecycler = findViewById(R.id.contatosRecy)
         this.contatoRecycler.setHasFixedSize(true)
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
     fun abrirOpcoes(contato: Contato){
         val builder = AlertDialog.Builder(this)
         val itens = arrayOf("Editar", "Enviar Email", "Excluir")
+
         builder.setTitle(contato.nome)
         builder.setItems(itens) {dialog, which ->
             if(itens[which] == "Editar"){
@@ -112,12 +114,9 @@ class MainActivity : AppCompatActivity() {
     //// ---------------------------------------------------------
 
 
-
-
-
     fun atualizar(){
         this.lista.clear()
-        this.lista.addAll(this.dao.getListContatos("ASC"))
+        this.lista.addAll(this.dao.getListContatos(order))
         this.contatoRecycler.adapter?.notifyDataSetChanged()
     }
 
@@ -129,20 +128,22 @@ class MainActivity : AppCompatActivity() {
             if(resultCode == RESULT_OK){
                 if(requestCode == ADD_CONTATO){
                 //Add contato
+                    Log.i("App_Contato", "PASSEI POR AQUI - ADD")
                     val c = data?.getSerializableExtra("CONTATO") as Contato
                     this.dao.inserirContato(c)
 
-                    this.lista = dao.getListContatos("ASC")
+                    this.atualizar()
                     this.contatoRecycler.adapter?.notifyDataSetChanged()
-                }
-            }else if (requestCode == EDIT_CONTATO){
-                //Editar contato
-                val c = data?.getSerializableExtra("CONTATO") as Contato
-                this.dao.updateContato(c.id, c)
+                } else if (requestCode == EDIT_CONTATO){
+                    //Editar contato
+                    Log.i("App_Contato", "PASSEI POR AQUI")
+                    val c = data?.getSerializableExtra("CONTATO") as Contato
+                    this.dao.updateContato(c.id, c)
 
-                this.lista = dao.getListContatos("ASC")
+                    this.atualizar()
+                    this.contatoRecycler.adapter?.notifyDataSetChanged()
+            }
 
-                this.contatoRecycler.adapter?.notifyDataSetChanged()
             }
 
     }
@@ -160,7 +161,18 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.order_az -> {
+                order = "ASC"
+                this.lista = dao.getListContatos(order)
+                this.contatoRecycler.adapter = ContatoAdapter(this, lista)
+                true
+            }
+            R.id.order_za -> {
+                order = "DESC"
+                this.lista = dao.getListContatos(order)
+                this.contatoRecycler.adapter = ContatoAdapter(this, lista)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

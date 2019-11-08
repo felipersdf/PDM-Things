@@ -94,7 +94,7 @@ class EditActivity : AppCompatActivity() {
         }
 //        val contato = Contato(nome, email, telefone, foto)
         val itt = Intent()
-        itt.putExtra("CONTATO", contato)
+        itt.putExtra("CONTATO", this.contato)
         setResult(Activity.RESULT_OK, itt)
         finish()
     }
