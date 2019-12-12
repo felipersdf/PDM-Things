@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import TwitterKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,8 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //Importacao necessaria com as chaves do app
+        TWTRTwitter.sharedInstance().start(withConsumerKey:"d6LiCoHM4FO5InKsBOIJIS0Us", consumerSecret:"0E6U2m14fAxsfpkGxRVUmjwJWpgoQI7md787bouI3I3j0GtUmh")
+        
+        
         return true
     }
 
@@ -43,6 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return TWTRTwitter.sharedInstance().application(app, open: url, options: options)
+    }
+    
 
     // MARK: - Core Data stack
 

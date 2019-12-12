@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TwitterKit
 
 class FormViewController: UIViewController {
 
@@ -42,6 +43,29 @@ class FormViewController: UIViewController {
         
     }
     @IBAction func publicarMeta(_ sender: Any) {
+        let meta = self.tfMeta.text!
+        let composer = TWTRComposer()
+        let concluiu = self.swConcluiu.isOn
+        
+        if(!concluiu){
+            let alert = UIAlertController(title: "Calma lá", message: "Você nāo concluiu a sua meta!!", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+        }else {
+            composer.setText("Eu consegui! Eu cumpri a minha meta de '\(meta)' !!")
+            composer.setImage(UIImage(named: "twitterkit"))
+            
+            // Called from a UIViewController
+            composer.show(from: self.navigationController!) { (result) in
+                if (result == .done) {
+                    print("Successfully composed Tweet")
+                    
+                } else {
+                    print("Cancelled composing")
+                }
+            }
+        }
     }
 }
 

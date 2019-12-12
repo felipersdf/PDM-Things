@@ -60,7 +60,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hvO-Md-lHF">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="hvO-Md-lHF">
                                 <rect key="frame" x="163" y="412" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </switch>
@@ -102,6 +102,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btTwitter" destination="VvJ-BE-6XI" id="uzI-lx-Npe"/>
                         <outlet property="swConcluiu" destination="hvO-Md-lHF" id="wP4-BO-fPy"/>
                         <outlet property="tfMeta" destination="dKG-C5-CFZ" id="Sch-eh-mRn"/>
                     </connections>
