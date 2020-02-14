@@ -23,7 +23,7 @@
     <img alt="Repo Size" src="https://img.shields.io/github/repo-size/felipersdf/PDM-Things?color=%23000080">
   </a>
   
-  <a href="https://github.com/felipersdf/distributed-programming">
+  <a href="https://github.com/felipersdf/PDM-Things">
     <img alt="Last commit" src="https://img.shields.io/github/last-commit/felipersdf/PDM-Things?color=%23000080">
   </a>
 </p>
