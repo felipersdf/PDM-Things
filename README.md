@@ -43,7 +43,7 @@ This repository consists of storing the codes produced by the practical exercise
 |:---------:   |:---------:|:------------------------------------------------------:|:----------------------------------------------------------------------------:|            
 | AgendaContato|  Android	 | An app that store contacts                             | [Link](https://github.com/felipersdf/PDM-Things/tree/master/AgendaContato)   |
 | Amiguinhos	 |  Android  | An app that stores friends with the degree of affinity | [Link](https://github.com/felipersdf/PDM-Things/tree/master/Amiguinhos)      |
-| AppIntentService |	Adnroid | An app to understand the IntentService in android   | [Link](https://github.com/felipersdf/PDM-Things/tree/master/AppIntentService)|
+| AppIntentService |	Android | An app to understand the IntentService in android   | [Link](https://github.com/felipersdf/PDM-Things/tree/master/AppIntentService)|
 | Banco	        | Android  | An app that uses a database to store people            | [Link](https://github.com/felipersdf/PDM-Things/tree/master/Banco)           |
 | CNB	          | Android  | An app to understand the BroadCast Receiver in android | [Link](https://github.com/felipersdf/PDM-Things/tree/master/CNB)             |
 | DiadasCrianças | Android  | An app that stores a list of kids and their gifts     | [Link](https://github.com/felipersdf/PDM-Things/tree/master/DiadasCrianas)   |
